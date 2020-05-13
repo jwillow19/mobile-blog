@@ -1,19 +1,33 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import IndexScreen from './src/Screens/IndexScreen';
+import BlogScreen from './src/Screens/BlogScreen';
+import CreateScreen from './src/Screens/CreateScreen';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
-}
+import { Provider as BlogProvider } from './src/context/BlogContext';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const navigator = createStackNavigator(
+  {
+    Index: IndexScreen,
+    Blog: BlogScreen,
+    Create: CreateScreen,
   },
-});
+  {
+    initialRouteName: 'Index',
+    defaultNavigationOptions: {
+      title: 'Blog',
+    },
+  }
+);
+
+const App = createAppContainer(navigator);
+
+// @note  return own-custom component
+export default () => {
+  return (
+    <BlogProvider>
+      <App />
+    </BlogProvider>
+  );
+};
